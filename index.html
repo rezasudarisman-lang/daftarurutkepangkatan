@@ -28,7 +28,17 @@
   .badge-tmt, .badge-mapel { font-size: 0.7rem; font-weight: bold; padding: 4px 6px; border-radius: 4px; color: #fff; white-space: nowrap; }
   .badge-tmt { background-color: #e74c3c; }
   .badge-mapel { background-color: #2980b9; }
-
+  /*modif*/
+  .category-scroll::-webkit-scrollbar-thumb {
+    background-color: #333; border-radius: 10px;
+  }
+    .section-title {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    border-left: 4px solid #f39c12;
+    padding-left: 10px;
+    color: #fff;
+  }
   /* Animasi Loading */
   #loading { text-align: center; font-size: 1.2rem; color: #f39c12; margin: 50px; }
 </style>
@@ -45,7 +55,14 @@
         <h2>Daftar Urut Kepangkatan</h2>
       </div>
     </div>
-
+        <div class="category-scroll">
+      <button class="cat-btn active">Semua Golongan</button>
+      <button class="cat-btn">Golongan I</button>
+      <button class="cat-btn">Golongan II</button>
+      <button class="cat-btn">Golongan III</button>
+      <button class="cat-btn">Golongan IV</button>
+    </div>
+    <h3 class="section-title">Daftar Pegawai Terbaru</h3>
     <div id="loading">Memuat data pegawai...</div>
     <div class="grid" id="grid-pegawai">
       </div>
