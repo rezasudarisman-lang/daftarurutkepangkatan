@@ -29,15 +29,35 @@
   .badge-tmt { background-color: #e74c3c; }
   .badge-mapel { background-color: #2980b9; }
   /*modif*/
-  .category-scroll::-webkit-scrollbar-thumb {
-    background-color: #333; border-radius: 10px;
+  .category-scroll {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 10px;
   }
-    .section-title {
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    border-left: 4px solid #f39c12;
-    padding-left: 10px;
+  .category-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+  .category-scroll::-webkit-scrollbar-thumb {
+    background-color: #333;
+    border-radius: 10px;
+  }
+  .cat-btn {
+    background-color: #1e1e1e;
+    color: #ddd;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid #333;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.3s;
+  }
+  .cat-btn:hover, .cat-btn.active {
+    background-color: #f39c12;
     color: #fff;
+    border-color: #f39c12;
   }
   /* Animasi Loading */
   #loading { text-align: center; font-size: 1.2rem; color: #f39c12; margin: 50px; }
