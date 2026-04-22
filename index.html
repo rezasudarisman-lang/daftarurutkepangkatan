@@ -98,88 +98,77 @@
   <script>
     // GANTI LINK DI BAWAH INI DENGAN LINK WEB APP ANDA
    // Simpan scriptURL Anda
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwiRIKpc4292caZhm3l9GBCBup4DHBdDgvR-VgX5wojFzAq99HHeLQYak61hwYtE8PH/exec';
-  
-  let allData = []; // Tempat menyimpan data asli
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwiRIKpc4292caZhm3l9GBCBup4DHBdDgvR-VgX5wojFzAq99HHeLQYak61hwYtE8PH/exec';
+  let allData = [];
 
-  // 2. Fungsi untuk mengambil data dari Google Sheets
   async function loadData() {
     try {
       const response = await fetch(scriptURL);
       allData = await response.json();
-      
-      // Tampilkan semua data saat pertama kali buka
       renderData(allData);
-      
       const loading = document.getElementById('loading');
       if (loading) loading.style.display = 'none';
-      
-      // Aktifkan fungsi klik tombol filter
       setupFilters();
     } catch (error) {
       console.error('Error:', error);
-      const loading = document.getElementById('loading');
-      if (loading) loading.innerText = 'Gagal memuat data. Periksa koneksi atau Deployment URL.';
+      if (document.getElementById('loading')) {
+        document.getElementById('loading').innerText = 'Gagal memuat data.';
+      }
     }
   }
 
-  // 3. Fungsi untuk membuat tampilan kartu pegawai
   function renderData(data) {
     const grid = document.getElementById('grid-pegawai');
     if (!grid) return;
-    
-    let html = '';
-    data.forEach(p => {
-      html += `
-        <div class="card">
-          <img src="${p.Foto || 'https://via.placeholder.com/400'}" class="card-img" alt="Foto">
-          <div class="card-body">
-            <div class="nip">NIP. ${p.NIP}</div>
-            <h2 class="nama">${p.Nama}</h2>
-            <div class="pangkat-wrapper">
-              <span class="golongan">${p.Pangkat} (${p.Golongan})</span>
-              <div class="badge-container">
-                <span class="badge-tmt">TMT: ${p.TMT}</span>
-                <span class="badge-mapel">${p.Mapel}</span>
-              </div>
+    grid.innerHTML = data.map(p => `
+      <div class="card">
+        <img src="${p.Foto || 'https://via.placeholder.com/400'}" class="card-img" alt="Foto">
+        <div class="card-body">
+          <div class="nip">NIP. ${p.NIP}</div>
+          <h2 class="nama">${p.Nama}</h2>
+          <div class="pangkat-wrapper">
+            <span class="golongan">${p.Pangkat} (${p.Golongan})</span>
+            <div class="badge-container">
+              <span class="badge-tmt">TMT: ${p.TMT}</span>
+              <span class="badge-mapel">${p.Mapel}</span>
             </div>
           </div>
         </div>
-      `;
-    });
-    grid.innerHTML = html;
+      </div>
+    `).join('');
   }
 
-  // 4. Fungsi Logika Filter Tombol
   function setupFilters() {
     const buttons = document.querySelectorAll('.cat-btn');
-    
     buttons.forEach(button => {
       button.onclick = function() {
-        // Efek Visual: Ubah tombol yang aktif
-        document.querySelector('.cat-btn.active').classList.remove('active');
+        // Pindahkan class active
+        const currentActive = document.querySelector('.cat-btn.active');
+        if (currentActive) currentActive.classList.remove('active');
         this.classList.add('active');
         
-        const teksTombol = this.innerText.trim(); // Contoh: "Golongan IV"
-        
-        if (teksTombol === "Semua Golongan") {
+        const text = this.innerText.trim();
+        if (text === "Semua Golongan") {
           renderData(allData);
-        } else {
-          // Ambil angka romawinya saja (IV, III, dsb)
-          const romawi = teksTombol.replace('Golongan ', '').trim();
-          
-          // Filter data yang kolom Golongannya diawali dengan romawi tersebut (misal: "IV/c")
-          const hasilFilter = allData.filter(p => {
-            return p.Golongan && p.Golongan.startsWith(romawi);
-          });
-          
-          renderData(hasilFilter);
+          return;
         }
+
+        // Ambil "I", "II", "III", atau "IV" dari teks tombol
+        const targetRomawi = text.replace('Golongan ', '').trim();
+        
+        // Filter dengan logika pemisahan tanda miring (/)
+        const filtered = allData.filter(p => {
+          if (!p.Golongan) return false;
+          // Memastikan "IV/c" dipotong menjadi "IV" saja sebelum dicek
+          const romanFromData = p.Golongan.split('/')[0].trim();
+          return romanFromData === targetRomawi;
+        });
+        
+        renderData(filtered);
       };
     });
   }
 
-  // Jalankan fungsi saat halaman dimuat
   loadData();
   </script>
 
