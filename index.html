@@ -98,78 +98,45 @@
   <script>
     // GANTI LINK DI BAWAH INI DENGAN LINK WEB APP ANDA
    // Simpan scriptURL Anda
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwiRIKpc4292caZhm3l9GBCBup4DHBdDgvR-VgX5wojFzAq99HHeLQYak61hwYtE8PH/exec';
-  let allData = [];
+   const scriptURL = 'https://script.google.com/macros/s/AKfycbwiRIKpc4292caZhm3l9GBCBup4DHBdDgvR-VgX5wojFzAq99HHeLQYak61hwYtE8PH/exec';
 
-  async function loadData() {
-    try {
-      const response = await fetch(scriptURL);
-      allData = await response.json();
-      renderData(allData);
-      const loading = document.getElementById('loading');
-      if (loading) loading.style.display = 'none';
-      setupFilters();
-    } catch (error) {
-      console.error('Error:', error);
-      if (document.getElementById('loading')) {
-        document.getElementById('loading').innerText = 'Gagal memuat data.';
+    async function loadData() {
+      try {
+        const response = await fetch(scriptURL);
+        const data = await response.json();
+        const grid = document.getElementById('grid-pegawai');
+        const loading = document.getElementById('loading');
+        
+        let html = '';
+        data.forEach(p => {
+          html += `
+            <div class="card">
+              <img src="${p.Foto || 'https://via.placeholder.com/400'}" class="card-img" alt="Foto">
+              <div class="card-body">
+                <div class="nip">NIP. ${p.NIP}</div>
+                <h2 class="nama">${p.Nama}</h2>
+                <div class="pangkat-wrapper">
+                  <span class="golongan">${p.Pangkat} (${p.Golongan})</span>
+                  <div class="badge-container">
+                    <span class="badge-tmt">TMT: ${p.TMT}</span>
+                    <span class="badge-mapel">${p.Mapel}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        grid.innerHTML = html;
+        loading.style.display = 'none';
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('loading').innerText = 'Gagal memuat data. Pastikan Deployment Apps Script benar.';
       }
     }
-  }
 
-  function renderData(data) {
-    const grid = document.getElementById('grid-pegawai');
-    if (!grid) return;
-    grid.innerHTML = data.map(p => `
-      <div class="card">
-        <img src="${p.Foto || 'https://via.placeholder.com/400'}" class="card-img" alt="Foto">
-        <div class="card-body">
-          <div class="nip">NIP. ${p.NIP}</div>
-          <h2 class="nama">${p.Nama}</h2>
-          <div class="pangkat-wrapper">
-            <span class="golongan">${p.Pangkat} (${p.Golongan})</span>
-            <div class="badge-container">
-              <span class="badge-tmt">TMT: ${p.TMT}</span>
-              <span class="badge-mapel">${p.Mapel}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function setupFilters() {
-    const buttons = document.querySelectorAll('.cat-btn');
-    buttons.forEach(button => {
-      button.onclick = function() {
-        // Pindahkan class active
-        const currentActive = document.querySelector('.cat-btn.active');
-        if (currentActive) currentActive.classList.remove('active');
-        this.classList.add('active');
-        
-        const text = this.innerText.trim();
-        if (text === "Semua Golongan") {
-          renderData(allData);
-          return;
-        }
-
-        // Ambil "I", "II", "III", atau "IV" dari teks tombol
-        const targetRomawi = text.replace('Golongan ', '').trim();
-        
-        // Filter dengan logika pemisahan tanda miring (/)
-        const filtered = allData.filter(p => {
-          if (!p.Golongan) return false;
-          // Memastikan "IV/c" dipotong menjadi "IV" saja sebelum dicek
-          const romanFromData = p.Golongan.split('/')[0].trim();
-          return romanFromData === targetRomawi;
-        });
-        
-        renderData(filtered);
-      };
-    });
-  }
-
-  loadData();
+    // Jalankan fungsi saat web dibuka
+    loadData();
   </script>
 
 </body>
