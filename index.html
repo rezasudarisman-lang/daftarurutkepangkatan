@@ -97,45 +97,75 @@
 
   <script>
     // GANTI LINK DI BAWAH INI DENGAN LINK WEB APP ANDA
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwiRIKpc4292caZhm3l9GBCBup4DHBdDgvR-VgX5wojFzAq99HHeLQYak61hwYtE8PH/exec';
+   // Simpan scriptURL Anda
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwiRIKpc4292caZhm3l9GBCBup4DHBdDgvR-VgX5wojFzAq99HHeLQYak61hwYtE8PH/exec';
 
-    async function loadData() {
-      try {
-        const response = await fetch(scriptURL);
-        const data = await response.json();
-        const grid = document.getElementById('grid-pegawai');
-        const loading = document.getElementById('loading');
-        
-        let html = '';
-        data.forEach(p => {
-          html += `
-            <div class="card">
-              <img src="${p.Foto || 'https://via.placeholder.com/400'}" class="card-img" alt="Foto">
-              <div class="card-body">
-                <div class="nip">NIP. ${p.NIP}</div>
-                <h2 class="nama">${p.Nama}</h2>
-                <div class="pangkat-wrapper">
-                  <span class="golongan">${p.Pangkat} (${p.Golongan})</span>
-                  <div class="badge-container">
-                    <span class="badge-tmt">TMT: ${p.TMT}</span>
-                    <span class="badge-mapel">${p.Mapel}</span>
-                  </div>
-                </div>
-              </div>
+let allData = []; // Variabel untuk menyimpan data asli
+
+async function loadData() {
+  try {
+    const response = await fetch(scriptURL);
+    allData = await response.json(); // Simpan ke variabel global
+    renderData(allData); // Tampilkan semua data saat pertama kali dimuat
+    
+    const loading = document.getElementById('loading');
+    if (loading) loading.style.display = 'none';
+  } catch (error) {
+    console.error('Error:', error);
+    document.getElementById('loading').innerText = 'Gagal memuat data.';
+  }
+}
+
+// Fungsi untuk merender/menampilkan data ke HTML
+function renderData(data) {
+  const grid = document.getElementById('grid-pegawai');
+  let html = '';
+  
+  data.forEach(p => {
+    html += `
+      <div class="card" data-golongan="${p.Golongan}">
+        <img src="${p.Foto || 'https://via.placeholder.com/400'}" class="card-img" alt="Foto">
+        <div class="card-body">
+          <div class="nip">NIP. ${p.NIP}</div>
+          <h2 class="nama">${p.Nama}</h2>
+          <div class="pangkat-wrapper">
+            <span class="golongan">${p.Pangkat} (${p.Golongan})</span>
+            <div class="badge-container">
+              <span class="badge-tmt">TMT: ${p.TMT}</span>
+              <span class="badge-mapel">${p.Mapel}</span>
             </div>
-          `;
-        });
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+}
 
-        grid.innerHTML = html;
-        loading.style.display = 'none';
-      } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('loading').innerText = 'Gagal memuat data. Pastikan Deployment Apps Script benar.';
-      }
+// Tambahkan Event Listener untuk tombol-tombol filter
+document.querySelectorAll('.cat-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    // 1. Ubah tampilan tombol aktif
+    document.querySelector('.cat-btn.active').classList.remove('active');
+    this.classList.add('active');
+    
+    // 2. Ambil teks kategori (misal: "Golongan I", "Semua Golongan")
+    const category = this.innerText.trim();
+    
+    // 3. Logika Filter
+    if (category === "Semua Golongan") {
+      renderData(allData);
+    } else {
+      // Ambil angka Romawi dari teks tombol (misal "Golongan I" -> "I")
+      const golonganTarget = category.replace('Golongan ', '');
+      const filteredData = allData.filter(p => p.Golongan.trim() === golonganTarget);
+      renderData(filteredData);
     }
+  });
+});
 
-    // Jalankan fungsi saat web dibuka
-    loadData();
+// Jalankan fungsi saat web dibuka
+loadData();
   </script>
 
 </body>
