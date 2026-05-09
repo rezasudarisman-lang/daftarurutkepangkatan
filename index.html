@@ -15,7 +15,12 @@
   }
   .logo { font-size: 1.2rem; font-weight: 900; color: #fff; text-decoration: none; min-width: 150px; }
   .logo span { color: #f39c12; }
-
+  
+.search-container { 
+  position: relative; 
+  width: 50%; /* Akan selalu mengambil 50% lebar area navbar */
+  max-width: none; /* Menghapus batasan pixel agar mengikuti persentase */
+}
   .search-input {
     width: 50%; background: #2a2a2a; border: 1px solid #444; border-radius: 20px;
     padding: 8px 15px 8px 35px; color: #fff; outline: none; transition: 0.3s;
