@@ -205,6 +205,9 @@
       // Reset filter button ke "Semua" saat mencari
       document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelector('[data-filter="all"]').classList.add('active');
+
+      return ContentService.createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
     });
 
     fetchData();
