@@ -3,71 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal DUK - Filter & Search</title>
+<title>Portal DUK & Struktur Organisasi</title>
 <style>
-  /* --- BASE STYLE --- */
+  /* --- PENGATURAN DASAR --- */
   body { background-color: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-  
-  /* --- NAVBAR DENGAN PENCARIAN --- */
-  .navbar { 
-    background-color: #1e1e1e; padding: 10px 5%; display: flex; justify-content: space-between; 
-    align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #333; 
-  }
-  .logo { font-size: 1.2rem; font-weight: 900; color: #fff; text-decoration: none; min-width: 150px; }
+  .navbar { background-color: #1e1e1e; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #333; }
+  .logo { font-size: 1.5rem; font-weight: 900; color: #fff; text-decoration: none; }
   .logo span { color: #f39c12; }
-  
-  .search-container { position: relative; width: 100%; max-width: 400px; }
-  .search-input {
-    width: 100%; background: #2a2a2a; border: 1px solid #444; border-radius: 20px;
-    padding: 8px 15px 8px 35px; color: #fff; outline: none; transition: 0.3s;
-  }
-  .search-input:focus { border-color: #f39c12; box-shadow: 0 0 5px rgba(243,156,18,0.3); }
-  .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888; font-size: 0.9rem; }
-
   .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
 
-  /* --- BANNER & LOGO --- */
+  /* --- BANNER DENGAN LOGO --- */
   .banner { 
     background: linear-gradient(135deg, #2c3e50 0%, #1a1a1a 100%); 
-    border-radius: 12px; padding: 25px; margin-bottom: 30px; 
-    display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; 
+    border-radius: 12px; 
+    padding: 30px; 
+    margin-bottom: 40px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border: 1px solid #333; 
   }
-  .banner-text h2 { margin: 0; font-size: 1.5rem; color: #fff; }
-  .logo-instansi { width: 60px; height: 60px; object-fit: contain; }
+  .banner-text h2 { margin: 0; font-size: 1.8rem; color: #fff; }
+  .logo-instansi {
+    width: 80px; /* Ukuran logo */
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
+  }
 
-  /* --- CATEGORY FILTER --- */
-  .category-scroll {
-    display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px;
+  /* --- SEKSI STRUKTUR ORGANISASI --- */
+  .section-title { 
+    font-size: 1.4rem; 
+    margin: 40px 0 20px 0; 
+    border-left: 4px solid #f39c12; 
+    padding-left: 15px; 
+    color: #fff; 
   }
-  .category-scroll::-webkit-scrollbar { height: 4px; }
-  .category-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
   
-  .cat-btn {
-    background: #1e1e1e; color: #bbb; padding: 8px 18px; border-radius: 20px;
-    border: 1px solid #333; cursor: pointer; white-space: nowrap; font-size: 0.85rem; font-weight: 600;
+  .org-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 60px;
+    background: #181818;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px dashed #444;
   }
-  .cat-btn.active { background: #f39c12; color: #fff; border-color: #f39c12; }
 
-  /* --- GRID PEGAWAI --- */
+  /* Baris Atas (Kepala Sekolah) */
+  .org-top { display: flex; justify-content: center; width: 100%; }
+  
+  /* Baris Bawah (Waka) */
+  .org-bottom { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    gap: 15px; 
+    width: 100%; 
+  }
+
+  /* Kartu Struktur */
+  .org-card {
+    background: #252525;
+    border: 1px solid #333;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    transition: 0.3s;
+  }
+  .org-card:hover { border-color: #f39c12; background: #2a2a2a; }
+  .org-role { font-size: 0.75rem; color: #f39c12; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px; }
+  .org-name { font-size: 1rem; font-weight: 600; color: #fff; }
+
+  /* Kartu Kepala Sekolah Spesifik */
+  .ks-card { border: 2px solid #f39c12; width: 250px; }
+
+  /* --- GRID PEGAWAI (MODAL SEBELUMNYA) --- */
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
-  .card { background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-height: 440px; transition: 0.3s; }
-  .card:hover { transform: translateY(-5px); border-color: #f39c12; }
+  .card { background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-height: 440px; }
   .card-img { width: 100%; height: 200px; object-fit: cover; background-color: #2a2a2a; }
   .card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
-  .nama { font-size: 1rem; font-weight: 700; color: #fff; margin: 5px 0 10px 0; min-height: 2.8em; }
+  .nama { font-size: 1.05rem; font-weight: 700; color: #fff; margin: 5px 0 10px 0; min-height: 2.8em; }
   .pangkat-wrapper { margin-top: auto; background-color: #181818; padding: 12px; border-radius: 6px; border: 1px solid #2a2a2a; }
-  .golongan-text { font-size: 0.9rem; font-weight: 800; color: #f39c12; display: block; margin-bottom: 8px; }
-  .badge-container { display: flex; gap: 5px; flex-wrap: wrap; }
-  .badge { font-size: 0.65rem; font-weight: bold; padding: 3px 6px; border-radius: 4px; color: #fff; }
+  .badge-container { display: flex; gap: 5px; margin-top: 8px; }
+  .badge-tmt, .badge-mapel { font-size: 0.65rem; font-weight: bold; padding: 3px 6px; border-radius: 4px; color: #fff; }
   .badge-tmt { background-color: #e74c3c; }
   .badge-mapel { background-color: #2980b9; }
 
-  #loading { text-align: center; color: #f39c12; margin: 40px; font-weight: bold; }
+  #loading { text-align: center; color: #f39c12; margin: 40px; }
 
+  /* Responsive Mobile */
   @media (max-width: 768px) {
-    .navbar { flex-direction: column; gap: 10px; padding: 15px; }
-    .search-container { max-width: 100%; }
-    .banner { flex-direction: column; text-align: center; gap: 15px; }
+    .org-bottom { grid-template-columns: 1fr 1fr; }
+    .banner-text h2 { font-size: 1.4rem; }
   }
 </style>
 </head>
@@ -81,134 +110,90 @@
     
     <div class="banner">
       <div class="banner-text">
-        <h2 id="instansiName">Daftar Urut Kepangkatan</h2>
-        <p style="font-size: 0.9rem; color: #888; margin-top: 5px;">Data Kepegawaian Real-time</p>
+        <h2>Sistem Informasi Kepegawaian</h2>
+        <p>Update Data Terakhir: Mei 2024</p>
       </div>
-      <img src="https://via.placeholder.com/100?text=LOGO" alt="Logo" class="logo-instansi">
+      <img src="https://via.placeholder.com/150?text=LOGO" alt="Logo Sekolah" class="logo-instansi">
     </div>
 
-    <div class="category-scroll" id="categoryFilter">
-      <button class="cat-btn active" data-filter="all">Semua</button>
-      <button class="cat-btn" data-filter="madya">Guru Madya</button>
-      <button class="cat-btn" data-filter="muda">Guru Muda</button>
-      <button class="cat-btn" data-filter="pertama">Guru Pertama</button>
-      <button class="cat-btn" data-filter="pppk">PPPK</button>
-      <button class="cat-btn" data-filter="pppk-guru">PPPK PW Guru</button>
-      <button class="cat-btn" data-filter="pppk-tu">PPPK PW TU</button>
+    <h3 class="section-title">Struktur Organisasi</h3>
+    <div class="org-container">
+      
+      <div class="org-top">
+        <div class="org-card ks-card">
+          <span class="org-role">Kepala Sekolah</span>
+          <div class="org-name">Nama Kepala Sekolah, M.Pd.</div>
+        </div>
+      </div>
+
+      <div class="org-bottom">
+        <div class="org-card">
+          <span class="org-role">Waka Kurikulum</span>
+          <div class="org-name">Nama Waka 1</div>
+        </div>
+        <div class="org-card">
+          <span class="org-role">Waka Humas</span>
+          <div class="org-name">Nama Waka 2</div>
+        </div>
+        <div class="org-card">
+          <span class="org-role">Waka Sarana Prasarana</span>
+          <div class="org-name">Nama Waka 3</div>
+        </div>
+        <div class="org-card">
+          <span class="org-role">Waka Kesiswaan</span>
+          <div class="org-name">Nama Waka 4</div>
+        </div>
+      </div>
+
     </div>
 
-    <div id="loading">Menghubungkan ke Google Sheets...</div>
+    <h3 class="section-title">Daftar Pegawai Terbaru</h3>
+    <div id="loading">Memuat data dari Google Sheets...</div>
     <div class="grid" id="grid-pegawai"></div>
 
   </div>
 
   <script>
-    // MASUKKAN URL APPS SCRIPT ANDA DI SINI
+    // MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwaEWRysLAloGQUnsuO3DR7hVd9DOnJAtgbSgH-Fh5JOKOBAMNtB5M8udHPMk5Zar-5/exec';
-    let allData = []; // Menyimpan data asli dari Google Sheets
-    async function fetchData() {
+
+    async function loadData() {
       try {
         const response = await fetch(scriptURL);
-        allData = await response.json();
-        renderCards(allData);
-        document.getElementById('loading').style.display = 'none';
-      } catch (error) {
-        document.getElementById('loading').innerText = 'Gagal memuat data. Periksa koneksi atau URL Script.';
-      }
-    }
-
-    function renderCards(data, category = 'all') {
-      const grid = document.getElementById('grid-pegawai');
-      let html = '';
-
-      if (data.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; width:100%; color:#888;">Data tidak ditemukan.</p>';
-        return;
-      }
-
-      data.forEach(p => {
-        // Logika Label Mapel vs Jabatan (Khusus PW TU)
-        let labelMapel = "Mapel";
-        if (category === 'pppk-tu' || p.Pangkat.includes("PW TU")) {
-          labelMapel = "Jabatan";
-        }
-
-        let fotoUrl = (p.Foto && p.Foto.trim() !== "") ? p.Foto : 'https://via.placeholder.com/400x400/2a2a2a/f39c12?text=No+Image';
-
-        html += `
-          <div class="card">
-            <img src="${fotoUrl}" class="card-img" alt="Foto">
-            <div class="card-body">
-              <div style="font-size: 0.75rem; color: #888;">NIP. ${p.NIP}</div>
-              <h2 class="nama">${p.Nama}</h2>
-              <div class="pangkat-wrapper">
-                <span class="golongan-text">${p.Pangkat} (${p.Golongan})</span>
-                <div class="badge-container">
-                  <span class="badge badge-tmt">TMT: ${p.TMT}</span>
-                  <span class="badge badge-mapel">${labelMapel}: ${p.Mapel}</span>
+        const data = await response.json();
+        const grid = document.getElementById('grid-pegawai');
+        const loading = document.getElementById('loading');
+        
+        let html = '';
+        data.forEach(p => {
+          html += `
+            <div class="card">
+              <img src="${p.Foto || 'https://via.placeholder.com/400'}" class="card-img" alt="Foto">
+              <div class="card-body">
+                <div style="font-size: 0.75rem; color: #888;">NIP. ${p.NIP}</div>
+                <h2 class="nama">${p.Nama}</h2>
+                <div class="pangkat-wrapper">
+                  <div style="font-size: 0.9rem; font-weight: 800; color: #f39c12;">${p.Pangkat} (${p.Golongan})</div>
+                  <div class="badge-container">
+                    <span class="badge-tmt">TMT: ${p.TMT}</span>
+                    <span class="badge-mapel">${p.Mapel}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        `;
-      });
-      grid.innerHTML = html;
+          `;
+        });
+
+        grid.innerHTML = html;
+        loading.style.display = 'none';
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('loading').innerText = 'Gagal memuat data.';
+      }
     }
 
-    // LOGIKA FILTER
-    document.getElementById('categoryFilter').addEventListener('click', (e) => {
-      if (!e.target.classList.contains('cat-btn')) return;
-
-      // Update UI Tombol
-      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-      e.target.classList.add('active');
-
-      const filter = e.target.getAttribute('data-filter');
-      let filtered = [];
-
-      switch(filter) {
-        case 'madya':
-          filtered = allData.filter(p => ['IV/a', 'IV/b', 'IV/c'].includes(p.Golongan));
-          break;
-        case 'muda':
-          filtered = allData.filter(p => ['III/c', 'III/d'].includes(p.Golongan));
-          break;
-        case 'pertama':
-          filtered = allData.filter(p => ['III/a', 'III/b'].includes(p.Golongan));
-          break;
-        case 'pppk':
-          filtered = allData.filter(p => p.Golongan.includes("Guru Ahli Pertama"));
-          break;
-        case 'pppk-guru':
-          filtered = allData.filter(p => p.Pangkat.includes("PPPK PW Guru") && p.Golongan.includes("Ahli pertama"));
-          break;
-        case 'pppk-tu':
-          // Ambil data TU saja lalu sortir berdasarkan jabatan (kolom Mapel)
-          filtered = allData.filter(p => p.Pangkat.includes("PPPK PW TU"));
-          filtered.sort((a, b) => a.Mapel.localeCompare(b.Mapel));
-          break;
-        default:
-          filtered = allData;
-      }
-      renderCards(filtered, filter);
-    });
-
-    // LOGIKA PENCARIAN
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      const val = e.target.value.toLowerCase();
-      const filtered = allData.filter(p => 
-        p.Nama.toLowerCase().includes(val) || 
-        p.NIP.toLowerCase().includes(val)
-      );
-      renderCards(filtered);
-      
-      // Reset filter button ke "Semua" saat mencari
-      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelector('[data-filter="all"]').classList.add('active');
-
-    });
-
-    fetchData();
+    loadData();
   </script>
+
 </body>
 </html>
