@@ -29,7 +29,16 @@
   /*stukturorganisasi*/
   /* Container Utama */
 .org-chart {
-  background: #121212;
+  background-color: rgba(255, 255, 255, 0.05);
+  /* 2. Efek blur di belakang (Glassmorphism) */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* Dukungan untuk Safari */
+    /* 3. Border halus untuk efek pantulan cahaya di pinggir */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+    /* 4. Sudut yang melengkung lembut */
+  border-radius: 16px;
+    /* 5. Bayangan untuk memberikan efek kedalaman */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   padding: 40px 20px;
   border-radius: 12px;
   border: 1px dashed #333;
