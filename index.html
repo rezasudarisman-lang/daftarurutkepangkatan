@@ -26,7 +26,124 @@
   }
   .banner-text h2 { margin: 0; font-size: 1.5rem; color: #fff; }
   .logo-instansi { width: 60px; height: 60px; object-fit: contain; }
+  /*stukturorganisasi*/
+  /* Container Utama */
+.org-chart {
+  background: #121212;
+  padding: 40px 20px;
+  border-radius: 12px;
+  border: 1px dashed #333;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 20px 0;
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+}
 
+/* Pengaturan Baris */
+.org-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* Kotak Kartu */
+.org-card {
+  background: #1e1e1e;
+  padding: 15px 25px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 200px;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.primary-card {
+  border: 1px solid #d4a017;
+  padding: 20px 40px;
+}
+
+/* Teks */
+.org-role {
+  color: #ffa500;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.org-name {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* GARIS PENGHUBUNG (ORANYE) */
+.top-row {
+  position: relative;
+  padding-bottom: 20px; 
+}
+
+.top-row::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background: #ffa500;
+  transform: translateX(-50%);
+}
+
+.bottom-row {
+  position: relative;
+  padding-top: 20px;
+}
+
+.bottom-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  background: #ffa500;
+}
+
+.bottom-row::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background: #ffa500;
+  transform: translateX(-50%);
+}
+
+.bottom-row .org-card::before {
+  content: '';
+  position: absolute;
+  top: -21px;
+  left: 50%;
+  width: 2px;
+  height: 21px;
+  background: #ffa500;
+  transform: translateX(-50%);
+}
+
+/* Responsive Mobile */
+@media (max-width: 768px) {
+  .org-card { width: 100%; }
+  .org-row { flex-direction: column; align-items: center; }
+  .top-row::after, .bottom-row::before, .bottom-row::after, .bottom-row .org-card::before {
+    display: none;
+  }
+}
   /* --- CATEGORY FILTER --- */
   .category-scroll {
     display: flex; gap: 10px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 10px;
@@ -77,7 +194,35 @@
       </div>
       <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqDZC1BfZwyWX3jZitY14xuvw7LI6p5DBWdGdpvsFh6iPiBoDIYncByJ0KiWMdWtJLpgrYIrUFIh-gBpnvDm6ng_oV5RO1IgoVBmlXHzQOT-oN6Qah33aMs2dZFqdpXMbLaYWEZJdto87JFGhWmrT_7pGjuzBeBA019KBJLx3emFCAXC4gkTEiBWqm_HQ/s2048/Logo%20SMAN%201%20Sukabumi.webp" alt="Logo" class="logo-instansi">
     </div>
+    <!-- STRUKTUR ORGANISASI -->
+<div class="org-chart">
+  <div class="org-row top-row">
+    <div class="org-card primary-card">
+      <div class="org-role">KEPALA SEKOLAH</div>
+      <div class="org-name">Nama Kepala Sekolah, M.Pd.</div>
+    </div>
+  </div>
 
+  <div class="org-row bottom-row">
+    <div class="org-card">
+      <div class="org-role">WAKA KURIKULUM</div>
+      <div class="org-name">Nama Waka 1</div>
+    </div>
+    <div class="org-card">
+      <div class="org-role">WAKA HUMAS</div>
+      <div class="org-name">Nama Waka 2</div>
+    </div>
+    <div class="org-card">
+      <div class="org-role">WAKA SARANA PRASARANA</div>
+      <div class="org-name">Nama Waka 3</div>
+    </div>
+    <div class="org-card">
+      <div class="org-role">WAKA KESISWAAN</div>
+      <div class="org-name">Nama Waka 4</div>
+    </div>
+  </div>
+</div>
+    <!-- STRUKTUR ORGANISASI -->  
     <div class="category-scroll" id="categoryFilter">
       <button class="cat-btn active" data-filter="all">Semua</button>
       <button class="cat-btn" data-filter="madya">Guru Madya</button>
